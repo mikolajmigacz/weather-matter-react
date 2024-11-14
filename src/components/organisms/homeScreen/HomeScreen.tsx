@@ -1,9 +1,22 @@
+import { useEffect } from 'react';
+
 import { useAuth } from '../../../contexts';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { setIsLoading } from '../../../store/slices/uiSlice';
 
 export const HomeScreen = () => {
   const { logout } = useAuth();
   const userData = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setIsLoading(true));
+    const timer = setTimeout(() => {
+      dispatch(setIsLoading(false));
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [dispatch]);
 
   return (
     <div>
