@@ -4,7 +4,7 @@ export class WeatherMapper {
   static mapTemperature(data: { Metric: { Value: number; Unit: string } }): Temperature {
     return {
       value: data.Metric.Value.toString(),
-      unit: `${data.Metric.Unit}°`,
+      unit: `${data.Metric.Unit}`,
     };
   }
 

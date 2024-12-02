@@ -2,17 +2,17 @@ import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import weatherImage from '../../../assets/images/weather.png';
-import { useAuth } from '../../../contexts';
-import { UserService } from '../../../services/user/user.service';
-import { useAppDispatch } from '../../../store/hooks';
-import { setUserData } from '../../../store/slices/userSlice';
-import { AuthForm } from '../../molecules/authForm/AuthForm';
-import { AuthFormData } from '../../molecules/authForm/AuthForm.types';
+import weatherImage from '../../assets/images/weather.png';
+import { AuthForm } from '../../components/molecules/authForm/AuthForm';
+import { AuthFormData } from '../../components/molecules/authForm/AuthForm.types';
+import { useAuth } from '../../contexts';
+import { UserService } from '../../services/user/user.service';
+import { useAppDispatch } from '../../store/hooks';
+import { setUserData } from '../../store/slices/userSlice';
 
-import { ScreenContainer, WeatherImage } from './AuthScreen.styles';
+import { ScreenContainer, WeatherImage } from './Auth.styles';
 
-export const AuthScreen = () => {
+export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { login, register } = useAuth();
   const navigate = useNavigate();
