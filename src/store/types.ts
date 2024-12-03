@@ -14,6 +14,7 @@ export type WeatherState = {
 
 export type UIState = {
   isLoading: boolean;
+  isMobile: boolean;
 };
 
 export type GlobalState = {

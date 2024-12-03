@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+
+import { useMediaQuery } from '@mui/material';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { LoadingModal } from '../components/molecules/loadingModal/LoadingModal';
@@ -6,15 +9,22 @@ import { ProtectedRoute } from '../components/routing/protectedRoute/ProtectedRo
 import { ROUTES } from '../constants/routes';
 import { AuthPage } from '../pages/auth/Auth';
 import { HomePage } from '../pages/home/Home';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { setIsMobile } from '../store/slices/uiSlice';
 import { GlobalStyles } from '../theme/globalStyles';
 
 import { Container, Main } from './AppLayout.styles';
 
-export const AppLayout = () => {
+export const AppLayout: React.FC = () => {
+  const dispatch = useAppDispatch();
   const isLoading = useAppSelector((state) => state.ui.isLoading);
   const location = useLocation();
   const showDrawer = location.pathname !== ROUTES.AUTH;
+  const isMobile = useMediaQuery('(max-width:600px)');
+
+  useEffect(() => {
+    dispatch(setIsMobile(isMobile));
+  }, [isMobile, dispatch]);
 
   return (
     <>
@@ -22,7 +32,7 @@ export const AppLayout = () => {
       <LoadingModal open={isLoading} />
       <Container>
         {showDrawer && <AppDrawer />}
-        <Main>
+        <Main showDrawer={showDrawer} isMobile={isMobile}>
           <Routes>
             <Route path={ROUTES.AUTH} element={<AuthPage />} />
             <Route

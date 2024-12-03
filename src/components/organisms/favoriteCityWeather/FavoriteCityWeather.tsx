@@ -1,4 +1,5 @@
 import { AppColors } from '../../../constants';
+import { useAppSelector } from '../../../store/hooks';
 import { CityName } from '../../atoms/cityName/CityName';
 import { Temperature } from '../../atoms/temperature/Temperature';
 import { WeatherIcon } from '../../atoms/weatherIcon/WeatherIcon';
@@ -12,23 +13,26 @@ import {
 import { FavoriteCityWeatherProps } from './FavoriteCityWeather.types';
 
 export const FavoriteCityWeather = ({ cityName, currentConditions }: FavoriteCityWeatherProps) => {
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
+
   return (
-    <WeatherContainer>
+    <WeatherContainer isMobile={isMobile}>
       <WeatherInfo>
-        <CityName name={cityName} />
-        <FeelsLikeWrapper>
+        <CityName name={cityName} fontSize={isMobile ? 32 : 40} />
+        <FeelsLikeWrapper isMobile={isMobile}>
           Temperatura odczuwalna:{' '}
           <Temperature
             value={currentConditions.realFeelTemperature.value}
             unit={currentConditions.realFeelTemperature.unit}
-            fontSize={20}
+            fontSize={isMobile ? 16 : 20}
             color={AppColors.teal}
           />
         </FeelsLikeWrapper>
-        <TemperatureWrapper>
+        <TemperatureWrapper isMobile={isMobile}>
           <Temperature
             value={currentConditions.temperature.value}
             unit={currentConditions.temperature.unit}
+            fontSize={isMobile ? 32 : undefined}
           />
         </TemperatureWrapper>
       </WeatherInfo>

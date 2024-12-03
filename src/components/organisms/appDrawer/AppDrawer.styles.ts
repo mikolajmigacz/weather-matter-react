@@ -1,16 +1,26 @@
 import { Box, Drawer, ListItem } from '@mui/material';
 import styled from 'styled-components';
 
-export const StyledDrawer = styled(Drawer)`
+export const StyledDrawer = styled(Drawer)<{ isMobile: boolean }>`
   .MuiDrawer-paper {
-    position: relative;
-    width: 350px;
+    width: ${({ isMobile }) => (isMobile ? '200px' : '350px')};
     background-color: ${({ theme }) => theme.colors.darkGray};
     color: ${({ theme }) => theme.colors.lightestGray};
     height: 100vh;
     display: flex;
     flex-direction: column;
   }
+`;
+
+export const MenuButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.lightestGray};
+  cursor: pointer;
+  padding: 8px;
 `;
 
 export const DrawerHeader = styled(Box)`
