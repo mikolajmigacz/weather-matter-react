@@ -13,6 +13,7 @@ import { setIsLoading } from '../../store/slices/uiSlice';
 import { Container, ErrorText, LoadingText } from './Home.styles';
 
 export const HomePage = () => {
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
   const [cityDetails, setCityDetails] = useState<CityDetails | null>(null);
@@ -55,15 +56,15 @@ export const HomePage = () => {
   }, [userData.favoriteCity, dispatch]);
 
   if (error) {
-    return <ErrorText>{error}</ErrorText>;
+    return <ErrorText isMobile={isMobile}>{error}</ErrorText>;
   }
 
   if (!userData.favoriteCity || !cityDetails || !currentConditions || !hourlyForecasts) {
-    return <LoadingText>Brak danych miasta</LoadingText>;
+    return <LoadingText isMobile={isMobile}>Brak danych miasta</LoadingText>;
   }
 
   return (
-    <Container>
+    <Container isMobile={isMobile}>
       <FavoriteCityWeather
         cityName={cityDetails.localizedName}
         currentConditions={currentConditions}
