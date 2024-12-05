@@ -6,6 +6,9 @@ export const Container = styled.div`
   padding: 64px;
   background-color: ${AppColors.darkestGray};
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
 `;
 
 export const LoadingText = styled.p`

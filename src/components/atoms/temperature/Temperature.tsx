@@ -3,6 +3,6 @@ import { TemperatureProps } from './Temperature.types';
 
 export const Temperature = ({ value, unit, fontSize, color }: TemperatureProps) => (
   <TemperatureWrapper fontSize={fontSize} color={color}>
-    {value} °{unit}
+    {value} {unit.startsWith('°') ? unit : `°${unit}`}
   </TemperatureWrapper>
 );

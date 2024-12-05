@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { FavoriteCityWeather } from '../../components/organisms/favoriteCityWeather/FavoriteCityWeather';
+import { HourlyForecast } from '../../components/organisms/hourlyForecast/HourlyForecast';
 import { CityService } from '../../services/cityInfo/cityInfo.service';
 import { CityDetails } from '../../services/cityInfo/cityInfo.types';
 import { CurrentConditions, WeatherService } from '../../services/currentConditions';
+import { TwelveHoursForecastService } from '../../services/twelveHoursForecast/twelveHoursForecast.service';
+import { HourForecast } from '../../services/twelveHoursForecast/twelveHoursForecast.types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setIsLoading } from '../../store/slices/uiSlice';
 
@@ -14,6 +17,7 @@ export const HomePage = () => {
   const userData = useAppSelector((state) => state.user);
   const [cityDetails, setCityDetails] = useState<CityDetails | null>(null);
   const [currentConditions, setCurrentConditions] = useState<CurrentConditions | null>(null);
+  const [hourlyForecasts, setHourlyForecasts] = useState<HourForecast[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,6 +40,9 @@ export const HomePage = () => {
 
         const conditions = await WeatherService.getCurrentConditions(details.key);
         setCurrentConditions(conditions);
+
+        const forecasts = await TwelveHoursForecastService.getTwelveHoursForecast(details.key);
+        setHourlyForecasts(forecasts);
       } catch (err) {
         setError('Wystąpił błąd podczas pobierania danych');
         console.error(err);
@@ -51,7 +58,7 @@ export const HomePage = () => {
     return <ErrorText>{error}</ErrorText>;
   }
 
-  if (!userData.favoriteCity || !cityDetails || !currentConditions) {
+  if (!userData.favoriteCity || !cityDetails || !currentConditions || !hourlyForecasts) {
     return <LoadingText>Brak danych miasta</LoadingText>;
   }
 
@@ -61,6 +68,7 @@ export const HomePage = () => {
         cityName={cityDetails.localizedName}
         currentConditions={currentConditions}
       />
+      <HourlyForecast forecasts={hourlyForecasts} />
     </Container>
   );
 };

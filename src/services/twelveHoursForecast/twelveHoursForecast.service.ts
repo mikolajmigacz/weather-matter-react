@@ -35,13 +35,4 @@ export class TwelveHoursForecastService {
       throw error;
     }
   }
-
-  static getFormattedTime(dateTime: string): string {
-    const date = new Date(dateTime);
-    return `${date.getHours().toString().padStart(2, '0')}:00`;
-  }
-
-  static getFormattedTemperature(forecast: HourForecast): string {
-    return `${forecast.temperature.value}${forecast.temperature.unit}`;
-  }
 }

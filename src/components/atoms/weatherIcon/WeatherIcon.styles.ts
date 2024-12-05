@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const StyledImage = styled.img`
-  width: 150px;
-  height: 150px;
+export const StyledImage = styled.img<{ size: number }>`
+  width: ${({ size }) => `${size}px`};
+  height: ${({ size }) => `${size}px`};
   object-fit: contain;
 `;

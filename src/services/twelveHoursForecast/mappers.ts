@@ -11,13 +11,21 @@ export class WeatherMapper {
   }): HourForecastTemperature {
     return {
       value: temperature.Value.toString(),
-      unit: `${temperature.Unit}`,
+      unit: temperature.Unit,
     };
+  }
+
+  static formatDateTime(dateTime: string): string {
+    const date = new Date(dateTime);
+    return date.toLocaleTimeString('pl-PL', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
 
   static mapHourForecast(data: HourForecastApiResponse): HourForecast {
     return {
-      dateTime: data.DateTime,
+      dateTime: this.formatDateTime(data.DateTime),
       weatherIcon: data.WeatherIcon,
       temperature: this.mapHourForecastTemperature(data.Temperature),
     };

@@ -9,6 +9,7 @@ import { ProtectedRoute } from '../components/routing/protectedRoute/ProtectedRo
 import { ROUTES } from '../constants/routes';
 import { AuthPage } from '../pages/auth/Auth';
 import { HomePage } from '../pages/home/Home';
+import { FlagsService } from '../services/flags/flags.service';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setIsMobile } from '../store/slices/uiSlice';
 import { GlobalStyles } from '../theme/globalStyles';
@@ -21,6 +22,10 @@ export const AppLayout: React.FC = () => {
   const location = useLocation();
   const showDrawer = location.pathname !== ROUTES.AUTH;
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  useEffect(() => {
+    FlagsService.setFlags();
+  }, []);
 
   useEffect(() => {
     dispatch(setIsMobile(isMobile));
