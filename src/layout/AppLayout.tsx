@@ -8,6 +8,8 @@ import { AppDrawer } from '../components/organisms/appDrawer/AppDrawer';
 import { ProtectedRoute } from '../components/routing/protectedRoute/ProtectedRoute';
 import { ROUTES } from '../constants/routes';
 import { AuthPage } from '../pages/auth/Auth';
+import { CitiesPage } from '../pages/cities/Cities';
+import { FavoriteCitiesPage } from '../pages/favoriteCities/FavoriteCities';
 import { HomePage } from '../pages/home/Home';
 import { FlagsService } from '../services/flags/flags.service';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -45,6 +47,22 @@ export const AppLayout: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.FAVORITE_CITIES}
+              element={
+                <ProtectedRoute>
+                  <FavoriteCitiesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.CITIES}
+              element={
+                <ProtectedRoute>
+                  <CitiesPage />
                 </ProtectedRoute>
               }
             />

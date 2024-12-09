@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 
+import { CurrentWeatherInfo } from '../../components/organisms/currentWeatherInfo/CurrentWeatherInfo';
+import { DailyForecast } from '../../components/organisms/dailyForecast/DailyForecast';
 import { FavoriteCityWeather } from '../../components/organisms/favoriteCityWeather/FavoriteCityWeather';
 import { HourlyForecast } from '../../components/organisms/hourlyForecast/HourlyForecast';
 import { CityService } from '../../services/cityInfo/cityInfo.service';
 import { CityDetails } from '../../services/cityInfo/cityInfo.types';
 import { CurrentConditions, WeatherService } from '../../services/currentConditions';
+import { FiveDaysForecastService } from '../../services/fiveDaysForecast/fiveDaysForecast.service';
+import { DayForecast } from '../../services/fiveDaysForecast/fiveDaysForecast.types';
 import { TwelveHoursForecastService } from '../../services/twelveHoursForecast/twelveHoursForecast.service';
 import { HourForecast } from '../../services/twelveHoursForecast/twelveHoursForecast.types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setIsLoading } from '../../store/slices/uiSlice';
 
-import { Container, ErrorText, LoadingText } from './Home.styles';
+import { MainContainer, LeftColumn, RightColumn, ErrorText, LoadingText } from './Home.styles';
 
 export const HomePage = () => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -19,6 +23,7 @@ export const HomePage = () => {
   const [cityDetails, setCityDetails] = useState<CityDetails | null>(null);
   const [currentConditions, setCurrentConditions] = useState<CurrentConditions | null>(null);
   const [hourlyForecasts, setHourlyForecasts] = useState<HourForecast[] | null>(null);
+  const [fiveDaysForecast, setFiveDaysForecast] = useState<DayForecast[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -44,6 +49,9 @@ export const HomePage = () => {
 
         const forecasts = await TwelveHoursForecastService.getTwelveHoursForecast(details.key);
         setHourlyForecasts(forecasts);
+
+        const fiveDayForecasts = await FiveDaysForecastService.getFiveDaysForecast(details.key);
+        setFiveDaysForecast(fiveDayForecasts);
       } catch (err) {
         setError('Wystąpił błąd podczas pobierania danych');
         console.error(err);
@@ -59,17 +67,32 @@ export const HomePage = () => {
     return <ErrorText isMobile={isMobile}>{error}</ErrorText>;
   }
 
-  if (!userData.favoriteCity || !cityDetails || !currentConditions || !hourlyForecasts) {
+  if (
+    !userData.favoriteCity ||
+    !cityDetails ||
+    !currentConditions ||
+    !hourlyForecasts ||
+    !fiveDaysForecast
+  ) {
     return <LoadingText isMobile={isMobile}>Brak danych miasta</LoadingText>;
   }
 
   return (
-    <Container isMobile={isMobile}>
-      <FavoriteCityWeather
-        cityName={cityDetails.localizedName}
-        currentConditions={currentConditions}
-      />
-      <HourlyForecast forecasts={hourlyForecasts} />
-    </Container>
+    <MainContainer isMobile={isMobile}>
+      <LeftColumn isMobile={isMobile}>
+        <FavoriteCityWeather
+          cityName={cityDetails.localizedName}
+          currentConditions={currentConditions}
+        />
+        <HourlyForecast forecasts={hourlyForecasts} />
+        <CurrentWeatherInfo currentConditions={currentConditions} />
+        {isMobile && <DailyForecast daysForecast={fiveDaysForecast} />}
+      </LeftColumn>
+      {!isMobile && (
+        <RightColumn>
+          <DailyForecast daysForecast={fiveDaysForecast} />
+        </RightColumn>
+      )}
+    </MainContainer>
   );
 };

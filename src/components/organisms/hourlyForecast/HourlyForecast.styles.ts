@@ -38,7 +38,7 @@ export const ForecastItem = styled.div<{ isMobile: boolean }>`
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    height: ${({ isMobile }) => (isMobile ? '70%' : '100%')};
+    height: ${({ isMobile }) => (isMobile ? '70%' : '75%')};
     width: 1px;
     background-color: ${AppColors.teal};
   }
