@@ -1,3 +1,4 @@
+import { CityDetails } from '../services/cityInfo/cityInfo.types';
 import { CurrentConditions } from '../services/currentConditions';
 
 export type UserState = {
@@ -5,6 +6,7 @@ export type UserState = {
   login: string | null;
   name: string | null;
   favoriteCity: string | null;
+  favoriteCities: CityDetails[];
 };
 
 export type WeatherState = {

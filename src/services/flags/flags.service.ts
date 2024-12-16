@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { collection, doc, getDocs, writeBatch } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, writeBatch } from 'firebase/firestore';
 
 import { db } from '../../config/firebase';
 
@@ -38,6 +38,23 @@ export class FlagsService {
       await batch.commit();
     } catch (error) {
       console.error('Error setting flags:', error);
+      throw error;
+    }
+  }
+
+  static async getFlag(countryId: string): Promise<Flag | null> {
+    try {
+      const flagRef = doc(collection(db, this.COLLECTION_NAME), countryId);
+      const flagSnapshot = await getDoc(flagRef);
+
+      if (flagSnapshot.exists()) {
+        return flagSnapshot.data() as Flag;
+      } else {
+        console.warn(`Flag with ID ${countryId} not found`);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching flag:', error);
       throw error;
     }
   }

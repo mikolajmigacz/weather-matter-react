@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { CityDetails } from '../../services/cityInfo/cityInfo.types';
 import { UserState } from '../types';
 
 const initialState: UserState = {
@@ -7,6 +8,7 @@ const initialState: UserState = {
   login: null,
   name: null,
   favoriteCity: null,
+  favoriteCities: [],
 };
 
 export const userSlice = createSlice({
@@ -19,8 +21,27 @@ export const userSlice = createSlice({
     clearUserData: (state) => {
       Object.assign(state, initialState);
     },
+    setFavoriteCities: (state, action: PayloadAction<CityDetails[]>) => {
+      state.favoriteCities = action.payload;
+    },
+    addFavoriteCity: (state, action: PayloadAction<CityDetails>) => {
+      if (!state.favoriteCities.find((city: CityDetails) => city.key === action.payload.key)) {
+        state.favoriteCities.push(action.payload);
+      }
+    },
+    removeFavoriteCity: (state, action: PayloadAction<string>) => {
+      state.favoriteCities = state.favoriteCities.filter(
+        (city: CityDetails) => city.key !== action.payload
+      );
+    },
   },
 });
 
-export const { setUserData, clearUserData } = userSlice.actions;
+export const {
+  setUserData,
+  clearUserData,
+  setFavoriteCities,
+  addFavoriteCity,
+  removeFavoriteCity,
+} = userSlice.actions;
 export default userSlice.reducer;

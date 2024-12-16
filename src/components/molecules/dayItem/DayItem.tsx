@@ -9,7 +9,9 @@ import { DayItemProps } from './DayItem.types';
 
 const getDayOfWeekInPolish = (dateString: string): string => {
   const daysInPolish = ['Niedz', 'Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob'];
-  const date = new Date(dateString);
+  const [day, month] = dateString.split('.').map(Number);
+  const currentYear = new Date().getFullYear();
+  const date = new Date(currentYear, month - 1, day);
   const dayIndex = date.getDay();
   return daysInPolish[dayIndex];
 };
@@ -17,6 +19,7 @@ const getDayOfWeekInPolish = (dateString: string): string => {
 export const DayItem: React.FC<DayItemProps> = ({ dayItem }) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const { date, icon, iconPhrase, temperature } = dayItem;
+
   const dayOfWeek = getDayOfWeekInPolish(date);
 
   return (

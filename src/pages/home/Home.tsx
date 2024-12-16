@@ -7,14 +7,16 @@ import { HourlyForecast } from '../../components/organisms/hourlyForecast/Hourly
 import { CityService } from '../../services/cityInfo/cityInfo.service';
 import { CityDetails } from '../../services/cityInfo/cityInfo.types';
 import { CurrentConditions, WeatherService } from '../../services/currentConditions';
+import { FavoriteCityService } from '../../services/favoriteCities/favoriteCities.service';
 import { FiveDaysForecastService } from '../../services/fiveDaysForecast/fiveDaysForecast.service';
 import { DayForecast } from '../../services/fiveDaysForecast/fiveDaysForecast.types';
 import { TwelveHoursForecastService } from '../../services/twelveHoursForecast/twelveHoursForecast.service';
 import { HourForecast } from '../../services/twelveHoursForecast/twelveHoursForecast.types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setIsLoading } from '../../store/slices/uiSlice';
+import { setFavoriteCities } from '../../store/slices/userSlice';
 
-import { MainContainer, LeftColumn, RightColumn, ErrorText, LoadingText } from './Home.styles';
+import { LeftColumn, RightColumn, ErrorText, LoadingText, MainContainer } from './Home.styles';
 
 export const HomePage = () => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -25,6 +27,27 @@ export const HomePage = () => {
   const [hourlyForecasts, setHourlyForecasts] = useState<HourForecast[] | null>(null);
   const [fiveDaysForecast, setFiveDaysForecast] = useState<DayForecast[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFavoriteCities = async () => {
+      dispatch(setIsLoading(true));
+
+      try {
+        const response = await FavoriteCityService.getFavoriteCities(userData.userId || '');
+        if (response.success && response.cities) {
+          dispatch(setFavoriteCities(response.cities));
+        } else {
+          console.warn('No favorite cities found or failed to fetch favorite cities');
+        }
+      } catch (err) {
+        console.error('Error fetching favorite cities:', err);
+      } finally {
+        dispatch(setIsLoading(false));
+      }
+    };
+
+    fetchFavoriteCities();
+  }, [dispatch, userData.userId]);
 
   useEffect(() => {
     const fetchData = async () => {
