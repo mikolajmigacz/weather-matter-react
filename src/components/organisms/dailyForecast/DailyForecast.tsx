@@ -14,7 +14,7 @@ export const DailyForecast: React.FC<DailyForecastProps> = ({ daysForecast }) =>
       <Title isMobile={isMobile}>Prognoza 7-dniowa</Title>
       <List>
         {daysForecast.map((forecast, index) => (
-          <ListItemWrapper key={index} isLast={index === daysForecast.length - 1}>
+          <ListItemWrapper key={index} islast={index === daysForecast.length - 1}>
             <DayItem dayItem={forecast} />
           </ListItemWrapper>
         ))}

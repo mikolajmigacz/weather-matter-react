@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
+import { AppColors } from '../../../constants';
+import { FlagsService } from '../../../services/flags/flags.service';
+import { Flag } from '../../../services/flags/flags.types';
+import { useAppSelector } from '../../../store/hooks';
+
 import {
   CityImage,
   TextContainer,
@@ -14,12 +19,8 @@ import {
   ModalContent,
   ModalText,
   ModalTitle,
-} from '../../components/favoriteItem/FavoriteItem.styles';
-import { FavoriteCityItemProps } from '../../components/favoriteItem/FavoriteItem.types';
-import { AppColors } from '../../constants';
-import { FlagsService } from '../../services/flags/flags.service';
-import { Flag } from '../../services/flags/flags.types';
-import { useAppSelector } from '../../store/hooks';
+} from './FavoriteItem.styles';
+import { FavoriteCityItemProps } from './FavoriteItem.types';
 
 export const FavoriteCityItem: React.FC<FavoriteCityItemProps> = ({ selectedCity, onDelete }) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);

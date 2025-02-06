@@ -18,6 +18,19 @@ import { setFavoriteCities } from '../../store/slices/userSlice';
 
 import { LeftColumn, RightColumn, ErrorText, LoadingText, MainContainer } from './Home.styles';
 
+/**
+ * The main home page displaying weather information for the user's favorite city.
+ *
+ * This component fetches and displays the current weather conditions, hourly forecast,
+ * and 5-day forecast for the selected favorite city. It also retrieves the user's favorite
+ * cities list and updates the global state accordingly.
+ *
+ * If no favorite city is selected, a placeholder message is displayed.
+ * The layout adapts to both desktop and mobile views for an optimal user experience.
+ *
+ * @returns {React.FC} The HomePage component.
+ */
+
 export const HomePage = () => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const dispatch = useAppDispatch();

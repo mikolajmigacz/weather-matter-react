@@ -40,7 +40,7 @@ export const AppLayout: React.FC = () => {
       <LoadingModal open={isLoading} />
       <Container>
         {showDrawer && <AppDrawer />}
-        <Main showDrawer={showDrawer} isMobile={isMobile}>
+        <Main showdrawer={showDrawer} isMobile={isMobile}>
           <Routes>
             <Route path={ROUTES.AUTH} element={<AuthPage />} />
             <Route

@@ -1,4 +1,14 @@
-import { doc, getDoc, updateDoc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  arrayUnion,
+  arrayRemove,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 import { db } from '../../config/firebase';
 import { CityService } from '../cityInfo/cityInfo.service';
@@ -9,6 +19,7 @@ import { FavoriteCityResponse, FirestoreCityDetails } from './favoriteCities.typ
 
 export class FavoriteCityService {
   private static readonly COLLECTION_NAME = 'favoriteCities';
+  private static readonly NOTIFICATIONS_COLLECTION = 'notifications';
 
   static async getFavoriteCities(
     userId: string
@@ -68,6 +79,13 @@ export class FavoriteCityService {
         });
       }
 
+      // Create a notification
+      await this.createNotification(
+        userId,
+        'New Favorite City Added',
+        `You added ${cityDetails.localizedName} to your favorite cities.`
+      );
+
       return { success: true, addedCity: cityDetails };
     } catch (error) {
       console.error('Error adding favorite city:', error);
@@ -97,6 +115,13 @@ export class FavoriteCityService {
           cities: arrayRemove(cityToRemove),
         });
 
+        // Create a notification
+        await this.createNotification(
+          userId,
+          'Favorite City Removed',
+          `You removed ${cityToRemove.localizedName} from your favorite cities.`
+        );
+
         return { success: true };
       }
 
@@ -104,6 +129,40 @@ export class FavoriteCityService {
     } catch (error) {
       console.error('Error removing favorite city:', error);
       return { success: false, error: 'Failed to remove favorite city' };
+    }
+  }
+
+  private static async createNotification(userId: string, title: string, body: string) {
+    try {
+      // Fetch the user document to verify existence and get FCM token
+      const userDocRef = doc(db, 'users', userId);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        console.warn('User document not found for notification creation');
+        return;
+      }
+
+      const userData = userDoc.data();
+      const fcmToken = userData?.fcmToken;
+
+      if (!fcmToken) {
+        console.warn('No FCM token found for the user');
+        return;
+      }
+
+      // Create a new notification document
+      await addDoc(collection(db, this.NOTIFICATIONS_COLLECTION), {
+        userId,
+        title,
+        body,
+        fcmToken,
+        createdAt: serverTimestamp(),
+      });
+
+      console.log('Notification created successfully');
+    } catch (error) {
+      console.error('Error creating notification:', error);
     }
   }
 }

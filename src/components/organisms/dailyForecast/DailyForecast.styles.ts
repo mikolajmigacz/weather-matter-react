@@ -22,9 +22,9 @@ export const List = styled.div`
   flex-direction: column;
 `;
 
-export const ListItemWrapper = styled.div<{ isLast: boolean }>`
+export const ListItemWrapper = styled.div<{ islast: boolean }>`
   display: flex;
   flex-direction: column;
   padding: 8px 0;
-  border-bottom: ${({ isLast }) => (isLast ? 'none' : `1px solid ${AppColors.teal}`)};
+  border-bottom: ${({ islast }) => (islast ? 'none' : `1px solid ${AppColors.teal}`)};
 `;

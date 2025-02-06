@@ -21,6 +21,19 @@ import {
   ContentWrapper,
 } from './Cities.styles';
 
+/**
+ * A page component that allows users to search for cities and view their current weather conditions.
+ *
+ * This component integrates an autocomplete service for city searches and fetches real-time weather
+ * conditions for a selected city. It manages loading states, handles errors, and adapts its layout
+ * for both mobile and desktop views.
+ *
+ * Users can search for a city using the input field, select a city from the results, and view its
+ * detailed weather conditions.
+ *
+ * @returns {React.FC} The CitiesPage component.
+ */
+
 export const CitiesPage: React.FC = () => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const [query, setQuery] = useState<string>('');
