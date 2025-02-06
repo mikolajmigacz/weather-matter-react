@@ -44,7 +44,7 @@ export class FlagsService {
 
   static async getFlag(countryId: string): Promise<Flag | null> {
     try {
-      const flagRef = doc(collection(db, this.COLLECTION_NAME), countryId);
+      const flagRef = doc(db, this.COLLECTION_NAME, countryId);
       const flagSnapshot = await getDoc(flagRef);
 
       if (flagSnapshot.exists()) {

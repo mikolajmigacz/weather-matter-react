@@ -11,6 +11,7 @@ import { AuthPage } from '../pages/auth/Auth';
 import { CitiesPage } from '../pages/cities/Cities';
 import { FavoriteCitiesPage } from '../pages/favoriteCities/FavoriteCities';
 import { HomePage } from '../pages/home/Home';
+import { MapPage } from '../pages/map/Map';
 import { FlagsService } from '../services/flags/flags.service';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setIsMobile } from '../store/slices/uiSlice';
@@ -63,6 +64,14 @@ export const AppLayout: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <CitiesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.MAP}
+              element={
+                <ProtectedRoute>
+                  <MapPage />
                 </ProtectedRoute>
               }
             />
